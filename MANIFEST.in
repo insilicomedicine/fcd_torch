@@ -1,0 +1,3 @@
+# MANIFEST.in
+include fcd_torch/ChemNet_v0.13_pretrained.pt
+
