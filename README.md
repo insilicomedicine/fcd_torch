@@ -1,6 +1,8 @@
 # Fréchet ChemNet Distance on PyTorch
 
-Implementation of [Fréchet ChemNet Distance](https://pubs.acs.org/doi/10.1021/acs.jcim.8b00234) ported from original repository https://github.com/bioinf-jku/FCD. The ported model produces the same outputs as the original Keras implementation and can be used for reproducible research. The PyTorch model of ChemNet weights tenfold less, resulting in faster loading.
+[![Build Status](https://travis-ci.com/insilicomedicine/fcd_torch.svg?branch=master)](https://travis-ci.com/insilicomedicine/fcd_torch) [![PyPI version](https://badge.fury.io/py/fcd-torch.svg)](https://badge.fury.io/py/fcd-torch)
+
+PyTorch implementation of [Fréchet ChemNet Distance](https://pubs.acs.org/doi/10.1021/acs.jcim.8b00234) ported from the original repository https://github.com/bioinf-jku/FCD. The ported model produces the same outputs as the original Keras implementation and can be used for reproducible research. The PyTorch model of ChemNet weights tenfold less, resulting in faster loading.
 
 
 Other features:
@@ -10,7 +12,7 @@ Other features:
 
 
 ## Installation
-You can install the `fcd_torch` library from pip (`pip install fcd_torch`), or directly from the source:
+First, install [RDKit](https://www.rdkit.org/docs/Install.html): `conda install -yq -c rdkit rdkit` and then install `fcd_torch` from pip (`pip install fcd_torch`), or directly from the source:
 ```{bash}
 git clone https://github.com/insilicomedicine/fcd_torch.git
 cd fcd_torch

@@ -1,20 +1,20 @@
+try:
+    from rdkit import Chem
+    _rdkit_available = True
+except ImportError as e:
+    import warnings
+    warnings.warn("RDKit is not installed. Canonization won't work.\n"
+                  "Original Import Error below:\n" + str(e))
+    _rdkit_available = False
 import numpy as np
 from contextlib import contextmanager
 import torch
 from torch import nn
-from torch.utils.data import Dataset, DataLoader
-from fcd_torch.torch_layers import Reverse, IndexTuple, \
-                                   IndexTensor, Transpose, \
-                                   SamePadding1d
+from torch.utils.data import Dataset
+from .torch_layers import Reverse, IndexTuple, \
+                          IndexTensor, Transpose, \
+                          SamePadding1d
 from scipy import linalg
-import warnings
-try:
-    from rdkit import Chem
-    _rdkit_available = True
-except ImportError:
-    warnings.warn("RDKit is not installed. Canonization won't work")
-    _rdkit_available = False
-
 
 __vocab = [
     'C', 'N', 'O', 'H', 'F', 'Cl', 'P', 'B', 'Br',
@@ -106,7 +106,7 @@ class SmilesDataset(Dataset):
         if self.canonize:
             mol = Chem.MolFromSmiles(smiles)
             if mol is None:
-                raise ValueError(f"Got invalid SMILES '{smiles}'")
+                raise ValueError("Got invalid SMILES '{}'".format(smiles))
             smiles = Chem.MolToSmiles(mol)
         features = get_one_hot(smiles, 350)
         return features / features.shape[1]

@@ -1,9 +1,9 @@
-import torch
-from torch.utils.data import DataLoader
 from fcd_torch.utils import SmilesDataset, \
                             calculate_frechet_distance, \
                             todevice, \
                             load_imported_model
+import torch
+from torch.utils.data import DataLoader
 import os
 import numpy as np
 import warnings
@@ -56,7 +56,7 @@ class FCD:
     def precalc(self, smiles_list):
         if len(smiles_list) < 2:
             warnings.warn("Can't compute FCD for less than 2 molecules"
-                          f"({len(smiles_list)} given)")
+                          "({} given)".format(len(smiles_list)))
             return np.nan
 
         dataloader = DataLoader(
@@ -90,20 +90,3 @@ class FCD:
         if pgen is None:
             pgen = self.precalc(gen)
         return self.metric(pref, pgen)
-
-    def test(self):
-        if not self.canonize:
-            raise ValueError("Can run test only for cannonize=True")
-        set1 = ['Oc1ccccc1-c1cccc2cnccc12',
-                'COc1cccc(NC(=O)Cc2coc3ccc(OC)cc23)c1']
-        set2 = ['CNC', 'CCCP',
-                'Oc1ccccc1-c1cccc2cnccc12',
-                'Cc1noc(C)c1CN(C)C(=O)Nc1cc(F)cc(F)c1',
-                'Cc1nc(NCc2ccccc2)no1-c1ccccc1']
-        output_keras = 52.83132961802335
-        output_pytorch = self(set1, set2)
-        diff = abs(output_keras-output_pytorch)
-        assert diff < 5e-4, (
-               f"Outputs differ. Keras model produced {output_keras},"
-               f"while PyTorch outputed {output_pytorch}. Diff is {diff}"
-        )

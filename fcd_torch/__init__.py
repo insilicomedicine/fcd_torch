@@ -1,1 +1,3 @@
-from fcd_torch.fcd import FCD
+from .fcd import FCD
+
+__all__ = ['FCD']

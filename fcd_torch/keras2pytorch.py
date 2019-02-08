@@ -74,7 +74,7 @@ def convert_LSTM_layer(keras_layer):
         elif weight.startswith('bias_ih'):
             pytorch_state[weight] = torch.tensor(b_ih)
         else:
-            raise ValueError(f"Unknown parameter {weight}")
+            raise ValueError("Unknown parameter {}".format(weight))
     pytorch_layer.load_state_dict(pytorch_state)
     other_info = {
         'reverse': keras_layer.get_config()['go_backwards'],
@@ -108,7 +108,7 @@ def convert_Conv1d_layer(keras_layer):
         elif weight.startswith('bias'):
             pytorch_state[weight] = torch.tensor(bias)
         else:
-            raise ValueError(f"Unknown parameter {weight}")
+            raise ValueError("Unknown parameter {}".format(weight))
     pytorch_layer.load_state_dict(pytorch_state)
     other_info = {
         'activation': keras_config['activation'],
