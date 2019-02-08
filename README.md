@@ -33,7 +33,7 @@ Import the module `from fcd_torch import FCD`. You can run calculation directly 
 
 ```python
 # Example 2:
-fcd = FCD(device='cuda:0', n_jobs=8)
+    fcd = FCD(device='cuda:0', n_jobs=8)
     smiles_list1 = ['COc1cccc(NC(=O)Cc2coc3ccc(OC)cc23)c1', 'Cc1noc(C)c1CN(C)C(=O)Nc1cc(F)cc(F)c1']
     smiles_list2 = ['Oc1ccccc1-c1cccc2cnccc12', 'Cc1noc(C)c1CN(C)C(=O)Nc1cc(F)cc(F)c1']
     pgen = fcd.precalc(smiles_list2)
