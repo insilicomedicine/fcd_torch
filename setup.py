@@ -6,7 +6,7 @@ with open("README.md", "r", encoding='utf8') as fh:
     long_description = fh.read()
 
 setup(name='fcd_torch',
-      version='1.0.4',
+      version='1.0.5',
       author='',
       author_email='',
       description='Fréchet ChemNet Distance on PyTorch',
