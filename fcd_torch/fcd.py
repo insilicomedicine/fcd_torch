@@ -53,12 +53,7 @@ class FCD:
         self.model.eval()
         self.canonize = canonize
 
-    def precalc(self, smiles_list):
-        if len(smiles_list) < 2:
-            warnings.warn("Can't compute FCD for less than 2 molecules"
-                          "({} given)".format(len(smiles_list)))
-            return np.nan
-
+    def get_predictions(self, smiles_list):
         dataloader = DataLoader(
             SmilesDataset(smiles_list, canonize=self.canonize),
             batch_size=self.batch_size,
@@ -72,7 +67,14 @@ class FCD:
                         batch.transpose(1, 2).float().to(self.device)
                     ).to('cpu').detach().numpy()
                 )
-        chemnet_activations = np.row_stack(chemnet_activations)
+        return np.row_stack(chemnet_activations)
+
+    def precalc(self, smiles_list):
+        if len(smiles_list) < 2:
+            warnings.warn("Can't compute FCD for less than 2 molecules"
+                          "({} given)".format(len(smiles_list)))
+            return np.nan
+        chemnet_activations = self.get_predictions(smiles_list)
         mu = chemnet_activations.mean(0)
         sigma = np.cov(chemnet_activations.T)
         return {'mu': mu, 'sigma': sigma}
