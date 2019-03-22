@@ -22,6 +22,22 @@ class test_same_output(unittest.TestCase):
                  "torch={}. diff is {}".format(output_pytorch, diff))
         )
 
+    def test_one_molecule(self):
+        fcd = FCD()
+        output_pytorch = fcd(['C'], ['C'])
+        self.assertNotEqual(
+            output_pytorch, output_pytorch,
+            msg=("FCD should return np.nan on invalid situations")
+        )
+
+    def test_zero_molecule(self):
+        fcd = FCD()
+        output_pytorch = fcd([], [])
+        self.assertNotEqual(
+            output_pytorch, output_pytorch,
+            msg=("FCD should return np.nan on invalid situations")
+        )
+
     def test_multiprocess(self):
         fcd = FCD(n_jobs=2)
         output_pytorch = fcd(self.set1, self.set2)

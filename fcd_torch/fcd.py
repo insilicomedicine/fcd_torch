@@ -54,6 +54,8 @@ class FCD:
         self.canonize = canonize
 
     def get_predictions(self, smiles_list):
+        if len(smiles_list) == 0:
+            return np.zeros((0, 512))
         dataloader = DataLoader(
             SmilesDataset(smiles_list, canonize=self.canonize),
             batch_size=self.batch_size,
@@ -73,13 +75,19 @@ class FCD:
         if len(smiles_list) < 2:
             warnings.warn("Can't compute FCD for less than 2 molecules"
                           "({} given)".format(len(smiles_list)))
-            return np.nan
+            return {}
         chemnet_activations = self.get_predictions(smiles_list)
         mu = chemnet_activations.mean(0)
         sigma = np.cov(chemnet_activations.T)
         return {'mu': mu, 'sigma': sigma}
 
     def metric(self, pref, pgen):
+        if 'mu' not in pref or 'sigma' not in pgen:
+            warnings.warn("Failed to compute FCD (check ref)")
+            return np.nan
+        if 'mu' not in pgen or 'sigma' not in pgen:
+            warnings.warn("Failed to compute FCD (check gen)")
+            return np.nan
         return calculate_frechet_distance(
             pref['mu'], pref['sigma'], pgen['mu'], pgen['sigma']
         )
